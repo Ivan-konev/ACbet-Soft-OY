@@ -29,6 +29,14 @@ if(isset($_POST['register-submit'])){
 }
 
 ?>
+<ul class="nav nav-tabs" id="inventory-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" id="search-tab"  href="user-managment.php">User management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="add-tab"  href="create-user.php">Lägg till User</a>
+                </li>
+            </ul>
 <div class="container mt-5">
     <h2 class="mb-4">Create User</h2>
     <form action="" method="POST" class="row g-3">

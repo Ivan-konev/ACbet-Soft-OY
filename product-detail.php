@@ -19,7 +19,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6">
-            <img src="path_to_images/<?= htmlspecialchars($product['prod_id']) ?>.jpg" class="img-fluid" alt="Product Image">
+            <img src="images/<?= htmlspecialchars($product['prod_code']) ?>.jpg" class="img-fluid" alt="Product Image">
         </div>
         <div class="col-md-6">
             <h2><?= htmlspecialchars($product['prod_title']) ?></h2>
@@ -28,14 +28,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             <p><strong>Price:</strong> $<?= htmlspecialchars($product['prod_price']) ?></p>
             <p><strong>Year:</strong> <?= htmlspecialchars($product['prod_year']) ?></p>
             <p><strong>Shelf:</strong> <?= htmlspecialchars($product['shelf_nr']) ?></p>
-            <p><?= nl2br(htmlspecialchars($product['prod_info'])) ?></p>
-            <a href="index.php" class="btn btn-secondary">Back to Shop</a>
+            
+            <a href="index.php#products" class="btn btn-secondary">Back to Shop</a>
+            <h2 id="Product-descH1">Product Description<h2>
+            <h3 id="Product-desc"><?= nl2br(htmlspecialchars($product['prod_info'])) ?></h3>
         </div>
     </div>
 </div>
 
 </body>
 </html>
-<?php
-require 'include/footer.php';
-?>
