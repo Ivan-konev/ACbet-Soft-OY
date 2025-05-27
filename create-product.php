@@ -61,6 +61,51 @@ if ($genresResponse['success']) {
     error_log("Failed to load genres: " . $genresResponse['error']);
 }
 
+if (isset($_POST['add-product'])) {
+    $success = insertBook($pdo, $_POST);
+
+   if ($success) {
+    echo '<div class="alert alert-success" role="alert">
+            Book inserted successfully!
+          </div>';
+    // Optional: Redirect user
+    // header("Location: success_page.php");
+    // exit;
+} else {
+    echo '<div class="alert alert-danger" role="alert">
+            Error inserting the book.
+          </div>';
+}
+}
+
+if (isset($_POST['add_category'])) {
+    $newCategory = $_POST['new_category'] ?? '';
+
+    if (addCategory($pdo, $newCategory)) {
+        // Category added successfully, reload page to refresh dropdown
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    } else {
+        // Optionally set an error message (if you want)
+        $error = "Category already exists or could not be added.";
+    }
+}
+
+if (isset($_POST['add_genre'])) {
+    $newGenre = $_POST['new_genre'] ?? '';
+
+    if (addGenre($pdo, $newGenre)) {
+        // Genre added successfully, reload page to refresh dropdown
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    } else {
+        // Optional: set error message
+        $error = "Genre already exists or could not be added.";
+    }
+}
+
+
+
 ?>
 
 <?php $currentPage = basename($_SERVER['PHP_SELF']); ?>
@@ -77,6 +122,18 @@ if ($genresResponse['success']) {
     </li>
     <li class="nav-item">
         <a class="nav-link <?= $currentPage === 'list.php' ? 'active' : '' ?>" id="lists-tab" href="list.php">Listor</a>
+<ul class="nav nav-tabs" id="inventory-tabs">
+    <li class="nav-item">
+        <a class="nav-link <?php echo ($currentPage == 'dashboard.php') ? 'active' : ''; ?>" id="search-tab" href="dashboard.php">Sök</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link <?php echo ($currentPage == 'create-product.php') ? 'active' : ''; ?>" id="add-tab" href="create-product.php">Lägg till objekt</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link <?php echo ($currentPage == 'edit-database.php') ? 'active' : ''; ?>" id="edit-database-tab" href="edit-database.php">Redigera databas</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link <?php echo ($currentPage == 'lists.php') ? 'active' : ''; ?>" id="lists-tab" href="lists.php">Listor</a>
     </li>
 </ul>
 
@@ -84,6 +141,8 @@ if ($genresResponse['success']) {
 	<div class="row justify-content-center">
 		<h2 class="mb-4">Add New Product</h2>
 		<form action="" method="POST" class="needs-validation" novalidate enctype="multipart/form-data">
+		<h2 class="mb-4">Add New Book</h2>
+		<form action="" method="POST" class="needs-validation" novalidate>
 		  <div class="row mb-3">
 			<div class="col-md-6">
 			  <label for="title" class="form-label">Titel</label>
@@ -92,6 +151,7 @@ if ($genresResponse['success']) {
 
 			<div class="col-md-6">
 				<label for="category" class="form-label">Kategori</label>
+				<label for="category" class="form-label">Category</label>
 				<div class="input-group">
 					<select name="category" id="category" class="form-select" required>
 						<?= renderCategorySelect($pdo, $category ?? '') ?>
@@ -142,6 +202,16 @@ if ($genresResponse['success']) {
 				<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addGenreModal">
 					<i class="bi bi-plus-circle"></i> Lägg till Genre
 				</button>
+			<div class="col-md-6">
+				<label for="genre" class="form-label">Genre</label>
+				<div class="input-group">
+					<select name="genre" id="genre" class="form-select" required>
+						<?= renderGenreSelect($pdo, $genre ?? '') ?>
+					</select>
+					<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addGenreModal">
+						Add
+					</button>
+				</div>
 			</div>
 		</div>
 
@@ -164,6 +234,7 @@ if ($genresResponse['success']) {
       <div class="row mb-3">
       <div class="col-md-6">
             <label for="prod_info" class="form-label">Produkt info</label>
+            <label for="prod_info" class="form-label">Product Info</label>
             <textarea name="prod_info" id="prod_info" class="form-control" rows="1"></textarea>
         </div>
 
@@ -174,6 +245,9 @@ if ($genresResponse['success']) {
         <div class="col-md-6">
             <label for="prod_img" class="form-label">Lägg till bild</label>
             <input type="file" name="Img_name" accept="image/*">  
+        </div>
+            <label for="prod_code" class="form-label">Product Code</label>
+            <input type="text" name="prod_code" id="prod_code" class="form-control">
         </div>
       </div>
 		  <div class="mb-3">
@@ -188,6 +262,7 @@ if ($genresResponse['success']) {
 		  </div>
 
 		  <button type="submit" class="btn btn-primary" name="add-product">Lägg till Bok</button>
+		  <button type="submit" class="btn btn-primary" name="add-product">Add Book</button>
 		</form>
 	</div>
 </div>
@@ -200,17 +275,21 @@ if ($genresResponse['success']) {
       <form method="post">
         <div class="modal-header">
           <h5 class="modal-title" id="addGenreModalLabel">Lägg till Genre</h5>
+          <h5 class="modal-title" id="addGenreModalLabel">Add New Genre</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3">
             <label for="new_genre" class="form-label">Genre Namn</label>
+            <label for="new_genre" class="form-label">Genre Name</label>
             <input type="text" class="form-control" id="new_genre" name="new_genre" required>
           </div>
         </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Avbryt</button>
           <button type="submit" name="add_genre" class="btn btn-primary">Lägg till Genre</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" name="add_genre" class="btn btn-primary">Add Genre</button>
         </div>
       </form>
     </div>
@@ -224,20 +303,25 @@ if ($genresResponse['success']) {
       <form method="POST" action="">
         <div class="modal-header">
           <h5 class="modal-title" id="addCategoryModalLabel">Lägg till Kategori</h5>
+          <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3">
             <label for="newCategoryName" class="form-label">Kategori Namn</label>
+            <label for="newCategoryName" class="form-label">Category Name</label>
             <input type="text" class="form-control" id="newCategoryName" name="new_category" required>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Avbryt</button>
           <button type="submit" name="add_category"  class="btn btn-primary">Spara Kategori</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" name="add_category"  class="btn btn-primary">Save Category</button>
         </div>
       </form>
     </div>
   </div>
 </div>
 
+</div>

@@ -37,7 +37,11 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6">
+<<<<<<< HEAD
             <img src="images/<?= htmlspecialchars($product['Img_name']) ?>" class="img-fluid" alt="Product Image">
+=======
+            <img src="images/<?= htmlspecialchars($product['prod_code']) ?>.jpg" class="img-fluid" alt="Product Image">
+>>>>>>> 9eaa33085df2e65624a0cf33ee42933732fbc200
         </div>
         <div class="col-md-6">
             <h2><?= htmlspecialchars($product['prod_title']) ?></h2>
@@ -46,10 +50,17 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             <p><strong>Price:</strong> €<?= htmlspecialchars($product['prod_price']) ?></p>
             <p><strong>Year:</strong> <?= htmlspecialchars($product['prod_year']) ?></p>
             <p><strong>Shelf:</strong> <?= htmlspecialchars($product['shelf_nr']) ?></p>
+<<<<<<< HEAD
 
             <a href="index.php#products" class="btn btn-secondary">Tillbaka</a>
             <h3 id="Product-descH1">Product Description</h3>
             <h4 id="Product-desc"><?= nl2br(htmlspecialchars($product['prod_info'])) ?></h4>
+=======
+            
+            <a href="index.php#products" class="btn btn-secondary">Back to Shop</a>
+            <h2 id="Product-descH1">Product Description<h2>
+            <h3 id="Product-desc"><?= nl2br(htmlspecialchars($product['prod_info'])) ?></h3>
+>>>>>>> 9eaa33085df2e65624a0cf33ee42933732fbc200
         </div>
     </div>
 </div>
@@ -140,6 +151,7 @@ if (empty($similarProducts)) {
 ?>
 
 </body>
+<<<<<<< HEAD
 </html>
 
 <style>
@@ -349,3 +361,6 @@ a.btn-primary:hover {
 }
 
 </style>
+=======
+</html>
+>>>>>>> 9eaa33085df2e65624a0cf33ee42933732fbc200

@@ -87,8 +87,11 @@ body {
     margin-bottom: 1rem;
 }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 9eaa33085df2e65624a0cf33ee42933732fbc200
 /* Sections */
 section h2 {
     color: var(--primary-color);
@@ -687,9 +690,12 @@ form .form-select:focus {
     background-color: var(--primary-dark);
     transform: scale(1.03);
 }
+<<<<<<< HEAD
 th.sortable {
     cursor: pointer;
     text-decoration: underline;
     user-select: none;
   }
   
+=======
+>>>>>>> 9eaa33085df2e65624a0cf33ee42933732fbc200

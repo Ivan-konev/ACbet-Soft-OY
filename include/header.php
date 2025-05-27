@@ -16,6 +16,7 @@ if(isset($_GET['logout']) && $_GET['logout']=== "true"){
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>User Create/Edit/Delete management</title>
+<<<<<<< HEAD
 
 <!-- CSS Order -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
@@ -26,6 +27,12 @@ if(isset($_GET['logout']) && $_GET['logout']=== "true"){
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script defer src="include/mainJS.js"></script>
 
+=======
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link rel="stylesheet" href="include/main.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script defer src="js/script.js"></script>
+>>>>>>> 9eaa33085df2e65624a0cf33ee42933732fbc200
 </head>
 <body>
 <nav id="Navbar" class="navbar navbar-expand-lg " style="background-color:#308c54;">
@@ -44,6 +51,12 @@ if(isset($_GET['logout']) && $_GET['logout']=== "true"){
         </li>
         <li class="nav-item d-flex align-items-center">
           <a class="nav-link text-white <?php echo $currentPage == 'dashboard.php' ? 'active' : ''; ?>" href="dashboard.php">Dashboard</a>
+<<<<<<< HEAD
+=======
+        </li>
+		 <li class="nav-item d-flex align-items-center">
+          <a class="nav-link text-white <?php echo $currentPage == 'dashboard.php' ? 'active' : ''; ?>" href="user-managment.php">HR</a>
+>>>>>>> 9eaa33085df2e65624a0cf33ee42933732fbc200
         </li>
 		<?php if ($user_obj->checkUserRole($_SESSION['user']['role'], [300, 9999])): ?>
 			<li class="nav-item d-flex align-items-center">
@@ -52,6 +65,7 @@ if(isset($_GET['logout']) && $_GET['logout']=== "true"){
 		<?php endif; ?>
 
       </ul>
+<<<<<<< HEAD
 	  <div class="d-flex pe-4">
           <?php if (isset($_SESSION['user'])): ?>
             <a href="edit-user.php?id=<?= $_SESSION['user']['id'] ?>" class="nav-link text-white d-flex align-items-center gap-2 mb-0">
@@ -68,6 +82,11 @@ if(isset($_GET['logout']) && $_GET['logout']=== "true"){
 				<button class="btn btn-outline-light text-white" type="submit" name="logout" value="true">Log out</button>
 			</form>
 		</div>
+=======
+             <form action="" method="get" >
+                <button class="btn btn-outline-light text-white" type="submit" name="logout" value="true">log out</button>
+             </form>
+>>>>>>> 9eaa33085df2e65624a0cf33ee42933732fbc200
     <?php
             endif;
      ?>
