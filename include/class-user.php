@@ -14,7 +14,7 @@ class User {
 			public function login($uNameMail, $password) {
 			try {
 				$stmt = $this->pdo->prepare("
-					SELECT u_id, u_name, u_email, u_password, r_level
+					SELECT u_id, u_name, u_email, u_password, r_level, r_name
 					FROM users 
 					INNER JOIN roles
 					ON users.u_role_fk = roles.r_id
@@ -38,7 +38,8 @@ class User {
 						'id' => $user['u_id'],
 						'name' => $user['u_name'],
 						'email' => $user['u_email'],
-						'role' => $user['r_level']
+						'role' => $user['r_level'],
+						'role_name' => $user['r_name']  // <== added
 					];
 
 					return ['success' => true];
@@ -64,12 +65,13 @@ class User {
 				session_destroy();
 			}
 			
-			public function checkUserRole($userRole, $requirement){
-				if($userRole >= $requirement){
-					return true;
-				}else{
-					return false;
-				}
+		public function checkUserRole($userRole, $allowedRoles) {
+			// Make sure $allowedRoles is an array (in case a single role is passed as a number)
+			$allowedRoles = (array) $allowedRoles;
+
+			// Check if the user's role is in the list of allowed roles
+			return in_array($userRole, $allowedRoles);
+
 			}
 			
 			public function checkUserRegisterInfo($uname, $umail, $upass, $upassrpt, $condition){

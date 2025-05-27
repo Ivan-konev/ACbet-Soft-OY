@@ -1,6 +1,11 @@
 <?php
 include_once "include/header.php";
 
+if (!isset($_SESSION['user']) || !$user_obj->checkUserRole($_SESSION['user']['role'], [300, 9999])) {
+    $_SESSION['access_denied'] = "You do not have permission to access that page.";
+    header('Location: dashboard.php');
+    exit;
+}
 
 if(isset($_GET['uid'])){
 	$userId = $_GET['uid'];
@@ -21,6 +26,7 @@ if(isset($_POST['confirm']) && $_POST['confirm'] === "delete"){
 if(isset($_POST['confirm']) && $_POST['confirm'] === "back"){
 	header("Location: edit-user.php?uid={$userId}");
 }
+
 
 
 ?>

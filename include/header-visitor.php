@@ -3,52 +3,98 @@ include_once "class-user.php";
 include_once "config.php";
 include_once "functions.php";
 
+$lang = $_GET['lang'] ?? 'sv'; // Bestämmer vilket språk som används
+$lang = ($lang === 'fi') ? 'fi' : 'sv'; // Om språket är fi, sätt till fi, annars sv
+
+include_once __DIR__ . "/../lang/header-$lang.php"; // Laddar in header-texten baserat på språket
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="<?php echo $lang; ?>"> <!-- Sätt språket för hela dokumentet -->
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Karis Antikvariat</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<link rel="stylesheet" href="css/style.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script defer src="js/script.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><?php echo $header_text['title']; ?></title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style rel="stylesheet" href="include/main.css"></style>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="include/main.css">
+  <style> 
+    .navbar {
+        background-color: #308c54;
+    }
+
+    .nav-link,
+    .navbar-brand {
+        color: white !important;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .nav-link:hover,
+    .navbar-brand:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 0.375rem;
+    }
+
+    .nav-link.active,
+    .navbar-brand.active {
+        font-weight: bold;
+        color: #ffffff !important;
+        border-radius: 0.375rem;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .btn-outline-light.active {
+        background-color: white;
+        color: #308c54;
+        border-color: white;
+        font-weight: bold;
+    }
+
+    .btn-outline-light:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+  </style>
 </head>
-<body >
-<nav id="Navbar" class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<body>
+
+<!-- Navbar -->
+<nav id="Navbar" class="navbar navbar-expand-lg px-5 py-3">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <!-- Brand alltid till vänster -->
+    <a class="navbar-brand <?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : ''; ?>" href="index.php?lang=<?=$lang?>">
+      <i class="fas fa-book-open me-2"></i><?php echo $header_text['brand']; ?>
+    </a>
+
+    <!-- Hamburgermeny till höger -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <div class="container">
-  <div class="row align-items-center justify-content-start" style="height: 70px;"> <!-- höjd på navbar -->
 
-    <!-- Karis Antikvariat -->
-    <div class="col-auto d-flex align-items-center">
-      <h3 class="mb-0">
-        <a class="nav-link" href="index.php"><strong>Karis Antikvariat</strong></a>
-      </h3>
-    </div>
+    <!-- Innehåll -->
+    <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
 
-    <!-- Detailed Search -->
-    <div class="col-auto d-flex align-items-center">
-      <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'searchpage.php' ? 'active' : ''; ?>" href="searchpage.php">
-      <strong>Searchpage</strong>
-      </a>
-    </div>
+      <!-- Vänster nav-länkar -->
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'about-us.php' ? 'active' : ''; ?>" href="index.php?lang=<?=$lang?>#about"><?php echo $header_text['about_us']; ?></a>
+        </li>
+      </ul>
 
-    <!-- About Us -->
-    <div class="col-auto d-flex align-items-center">
-      <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'about-us.php' ? 'active' : ''; ?>" href="about-us.php">
-        <strong>About Us</strong>
-      </a>
-    </div>
+      <!-- Höger språkknappar -->
+      <div class="d-flex ms-auto">
+        <a href="?lang=sv" class="btn btn-sm btn-outline-light me-2 <?php echo (empty($_GET['lang']) || $_GET['lang'] == 'sv') ? 'active' : ''; ?>"><?php echo $header_text['lang_sv']; ?></a>
+        <a href="?lang=fi" class="btn btn-sm btn-outline-light <?php echo (isset($_GET['lang']) && $_GET['lang'] == 'fi') ? 'active' : ''; ?>"><?php echo $header_text['lang_fi']; ?></a>
+      </div>
 
-  </div>
-</div>
-      <?php?>
     </div>
   </div>
 </nav>
